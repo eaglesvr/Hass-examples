@@ -1,0 +1,93 @@
+########## test variable states ############
+
+#- alias: Var_trigger
+#  trigger:      
+#    platform: state
+#    entity_id: variable.debug_var
+#    to: 'Value1'
+#  action:  
+#    - service: notify.file_notify
+#      data:
+#        message: "xxxx var set to on"
+#    - delay: '00:00:01'        
+#    - service:    variable.set_variable 
+#      data:
+#        variable: snr1  
+#        value: off
+
+
+#- alias: test_trigger1
+#  trigger:
+#    platform: event
+#    event_type: 'remote_button'
+#
+#  condition:
+#    condition: and
+#    conditions:
+#      - condition: template
+#        value_template: "{{trigger.event.data.button =='dis' }}"
+#      - condition: or
+#        conditions:
+#          - condition: state
+#            entity_id: alarm_control_panel.ha_alarm
+#            state: 'armed_away'
+#          - condition: state
+#            entity_id: alarm_control_panel.ha_alarm
+#            state: 'armed_home'
+#          - condition: state
+#            entity_id: alarm_control_panel.ha_alarm
+#            state: 'triggered'
+#
+#  action:
+#    - service: notify.file_notify
+#      data_template:  
+#        message: >
+#         trigger disarmed worked
+#
+#
+#- alias: test_aut
+#  trigger:
+#    platform: state
+##    to: 'on'
+#    entity_id:
+#    - variable.debug_var
+#  condition: 
+#  - condition: template
+#    value_template: "{{states('variable.debug_var')!='none' }}"
+#
+#  action:
+#    - service: notify.file_notify
+#      data_template:  
+#        message: >
+#         from trigger =  1. Variable set to  {{states('variable.debug_var')}}
+#    - service:    variable.set_variable 
+#      data:
+#        variable: debug_var  
+#        value: none
+#    - service: notify.file_notify
+#      data_template:  
+#        message: >
+#         from trigger =  2. Variable set to  {{states('variable.debug_var')}}
+#         
+#
+##    - service: notify.file_notify
+#      data_template:  
+#        message: >
+#          sent payload:  {{ trigger.payload_json.addr }}_{{ trigger.payload_json.func.event_state }}
+
+#          sent payload:  '{{ trigger.payload.json.addr }}''
+
+#           data_template:
+#             device: '{{ trigger.payload_json.device }}'
+#             key: '{{ trigger.payload_json.key }}'
+
+#- alias: Sensor Debug
+#  trigger:
+#    platform: event
+#    event_type: 'sensor_on'
+#  action:    
+#    - service: notify.file_notify
+#      data_template: 
+#        message: >
+#         Received Sensor Signal {{trigger.event.data.snr}}
+

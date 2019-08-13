@@ -1,0 +1,26 @@
+############# lights ########
+# signal from binary_sensor.pantry_lightX=> runs switch.pantry_light
+# binary_sensor.mbath_light1 calls state change for switch.mbath_light
+# multiple remote/sensor 
+- alias: Turn on_off lights
+  trigger:
+    platform: state
+    entity_id: 
+      - binary_sensor.mbath_light1
+      - binary_sensor.stairl_light1
+      - binary_sensor.garage_light1
+      - binary_sensor.mbed_fan1
+      - binary_sensor.comp_room_light1
+      - binary_sensor.pantry_light1
+      - binary_sensor.front_porch_light1
+      - binary_sensor.dn_table_light1
+      - binary_sensor.entry_light1
+  action:
+    - service_template: 'switch.turn_{{trigger.to_state.state}}'
+      data_template: 
+        entity_id: '{{trigger.entity_id.replace("binary_sensor","switch")[:-1]}}'
+    - service: notify.file_notify
+      data_template:  
+        message: >
+          {{trigger.entity_id.replace("binary_sensor","switch")[:-1]}}
+

@@ -1,0 +1,33 @@
+#- alias: ZM eventcount increased
+#  trigger:
+#    - platform: state
+#      entity_id: sensor.hikdoorbell_events
+#  condition:
+#    - condition: template
+#      value_template: >
+#        {{ trigger.to_state.state|int > trigger.from_state.state|int }}
+#  action:
+#    - service: notify.pushover_notify
+#      data:
+#        message: "zm motion"
+#    - service: notify.ios_yuriys_ipad
+#      data:
+#        message: "zm motion"
+#        data:
+#          push: 
+#            sound: "US-EN-Alexa-Motion-Detected-Generic.wav"
+- alias:  DoorBell Motion
+  trigger:
+    platform: mqtt
+    topic: DoorBellMotion
+  action:
+    - service: notify.pushover_notify
+      data:
+        message: "zm motion"
+    - service: notify.ios_yuriys_ipad
+      data:
+        message: "zm motion"
+        data:
+          push: 
+            sound: "US-EN-Alexa-Motion-Detected-Generic.wav"
+            

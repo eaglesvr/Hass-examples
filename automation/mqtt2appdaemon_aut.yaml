@@ -1,0 +1,64 @@
+######## Send event from sec sensors and remotes to appdaemon #########
+#### Should be replaced by appdaemon mqtt app #############
+#- alias: Rf_Trigger
+#  trigger:
+#    platform: mqtt
+#    topic: RF433/data
+#  condition:
+#  - condition: template
+#    value_template: >
+#      {{ trigger.payload[:9]=='{"rfin":"'}}
+#  action:
+#    - event: RF_X10_SEC_EVENT
+#      event_data_template:
+#        payload: "{{ trigger.payload[21:27] }}"
+#    - service: notify.file_notify
+#      data:  
+#        message: "****rfin mqtt received ****"
+#
+
+- alias: Mqtt_RF_to_Appdaemon
+  trigger:
+    platform: mqtt
+    topic: RF433/data
+  condition:
+  - condition: template
+    value_template: >
+      {{ trigger.payload[:9]=='{"rfin":"'}}
+  action:
+    - event: RF_X10_SEC_EVENT
+      event_data_template:
+        payload: "{{ trigger.payload[21:27] }}"
+  
+    - service: notify.file_notify
+      data:  
+        message: "****rfin mqtt received ****"
+
+#- alias: X10_Trigger
+#  trigger:
+#    platform: mqtt
+#    topic: X10/127.0.0.1/security/#
+#  action:
+#    - event: RF_X10_SEC_EVENT
+#      event_data_template:
+#        payload: "{{ trigger.payload_json.addr }}_{{ trigger.payload_json.func.event_state }}"
+
+- alias: Mqtt_X10_to_appdaemon
+  trigger:
+    platform: mqtt
+    topic: X10/127.0.0.1/security/#
+  action:
+    - service: notify.file_notify
+      data:  
+        message: "****x10 mqtt received ****"
+    - event: RF_X10_SEC_EVENT
+      event_data_template:
+        payload: "{{ trigger.payload_json.addr }}_{{ trigger.payload_json.func.event_state }}"
+#- alias: X10_Trigger
+#  trigger:
+#    platform: mqtt
+#    topic: X10/127.0.0.1/security/#
+#  action:
+#    - event: RF_X10_SEC_EVENT
+#      event_data_template:
+#        payload: "{{ trigger.payload_json.addr }}_{{ trigger.payload_json.func.event_state }}"
